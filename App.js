@@ -1,13 +1,15 @@
 import {StatusBar} from 'expo-status-bar';
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
-import Navbar from "./src/Navbar";
-import AddTodos from "./src/AddTodos";
-import {useState} from "react";
-import Todos from "./src/Todos";
+import {Alert, StyleSheet, Text, View} from 'react-native';
+import Navbar from "./src/Components/Navbar";
+import React, {useState} from "react";
+import MainScreen from "./src/Screens/MainScreen";
+import TodoScreen from "./src/Screens/TodoScreen";
+import AppCard from "./src/Screens/UI/AppCard";
 
 export default function App() {
 
     const [todos, setTodos] = useState([])
+    const [todoId, setTodoId] = useState(null)
 
     const addTodo = (title) => {
         setTodos(prev => [...prev, {
@@ -16,20 +18,53 @@ export default function App() {
         }])
     }
     const removeTodo = (id) => {
-        setTodos(prev => prev.filter(item => item.id !== id))
+        const deletingTodo = todos.find(item => item.id === id)
+        Alert.alert(
+            "",
+            `Are you sure to delete this task "${deletingTodo.title}" ?`,
+            [
+                {
+                    text: "Cancel",
+                    style: "negative",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => {
+                        setTodoId(null)
+                        setTodos(prev => prev.filter(item => item.id !== id))
+                    },
+                    style: "positive",
+                },
+
+            ],
+            {
+                cancelable: true,
+            }
+        );
+
     }
 
-    return (
-        <View style={styles.container}>
-            <Navbar title={'Todo App'}/>
-            <View style={styles.addTodo}>
-                <AddTodos onSubmit={addTodo}/>
-                <FlatList style={styles.todos}
-                          data={todos}
-                          keyExtractor={item => item.id}
-                          renderItem={({item}) => (<Todos todos={item} removeTodo={removeTodo}/>)}
-                />
+    const updateTodo = (id, title) => {
+        setTodos(prev => prev.map(todo => {
+            if(todo.id === id) {
+                todo.title = title
+            }
+            return todo
+        }))
+    }
 
+    let selectedTodo = todos.find(todo => todo.id === todoId)
+    return (
+        <View>
+            <Navbar title={'Todo App'}/>
+            <View style={styles.container}>
+                {todoId
+                    ? <TodoScreen setTodoId={setTodoId} todo={selectedTodo}
+                                  removeTodo={removeTodo} onSave={updateTodo} />
+                    : <MainScreen addTodo={addTodo} todos={todos}
+                                  removeTodo={removeTodo} setTodoId={setTodoId}
+                    />
+                }
             </View>
 
             <StatusBar style="auto"/>
@@ -38,12 +73,9 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-    container: {},
-    addTodo: {
+    container: {
         paddingHorizontal: 20,
         paddingVertical: 20
     },
-    todos: {
-        paddingTop: 20
-    }
+
 });
