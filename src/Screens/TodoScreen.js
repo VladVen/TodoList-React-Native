@@ -1,8 +1,11 @@
 import React, {useState} from "react";
-import {Button, Text, View, StyleSheet} from "react-native";
+import {View, StyleSheet, Dimensions} from "react-native";
 import Theme from "../Theme";
-import AppCard from "./UI/AppCard";
+import AppCard from "../Components/UI/AppCard";
 import EditModal from "../Components/EditModal";
+import AppTextBold from "../Components/UI/AppTextBold";
+import AppButton from "../Components/UI/AppButton";
+import {AntDesign} from "@expo/vector-icons";
 
 
 const TodoScreen = ({setTodoId, todo, removeTodo,onSave}) => {
@@ -12,10 +15,12 @@ const TodoScreen = ({setTodoId, todo, removeTodo,onSave}) => {
     return (
         <View style={style.container}>
             <AppCard style={style.card}>
-                <Text style={style.title}>
+                <AppTextBold style={style.title}>
                     {todo.title}
-                </Text>
-                <Button title={'Edit'} onPress={() => setModal(true)}/>
+                </AppTextBold>
+                <AppButton onPress={() => setModal(true)} color={Theme.submitColor}>
+                    <AntDesign name="edit" size={15} />
+                </AppButton>
             </AppCard>
             <EditModal visible={modal} onClose={setModal}
                        value={todo.title} removeTodo={removeTodo}
@@ -23,12 +28,15 @@ const TodoScreen = ({setTodoId, todo, removeTodo,onSave}) => {
             />
             <View style={style.buttons}>
                 <View style={style.button}>
-                    <Button title={'Go Back'} onPress={() => setTodoId(null)} color={Theme.goBackColor}/>
+                    <AppButton onPress={() => setTodoId(null)} color={Theme.goBackColor}>
+                        <AntDesign name="back" size={24}  />
+                    </AppButton>
                 </View>
                 <View style={style.button}>
-                    <Button title={'Delete'} color={Theme.deleteColor}
-                            onPress={() => removeTodo(todo.id)}
-                    />
+                    <AppButton color={Theme.deleteColor}
+                            onPress={() => removeTodo(todo.id)}>
+                        <AntDesign name="delete" size={24} />
+                    </AppButton>
                 </View>
             </View>
         </View>
@@ -45,7 +53,7 @@ const style = StyleSheet.create({
         marginBottom: 20
     },
     button: {
-        width: '30%'
+        width: Dimensions.get('window').width / 3
     },
     title: {
         fontSize: 20

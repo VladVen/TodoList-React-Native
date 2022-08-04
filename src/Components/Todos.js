@@ -1,13 +1,14 @@
 import React from "react";
-import {Text, View, StyleSheet, TouchableOpacity} from "react-native";
+import {View, StyleSheet, TouchableOpacity} from "react-native";
 import Theme from "../Theme";
+import AppTextBold from "./UI/AppTextBold";
 
 const Todos = ({todos, removeTodo, setTodoId}) => {
     return (
         <TouchableOpacity onPress={() => setTodoId(todos.id)}
                           onLongPress={() => removeTodo(todos.id)}>
             <View style={style.todo}>
-                <Text>{todos.title}</Text>
+                <AppTextBold >{todos.title}</AppTextBold>
             </View>
         </TouchableOpacity>
     )
@@ -22,8 +23,8 @@ const style = StyleSheet.create({
         borderWidth: 1,
         borderColor: Theme.mainColor,
         borderRadius: 5,
-        marginBottom: 10
-    }
+        marginBottom: 10,
+    },
 })
 
 export default Todos

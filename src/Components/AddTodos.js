@@ -1,27 +1,22 @@
 import React, {useState} from "react";
-import {Alert, Button, StyleSheet, TextInput, View} from "react-native";
+import {Button, Keyboard, StyleSheet, TextInput, View} from "react-native";
 import Theme from "../Theme";
+import MinSymb from "./UI/MinSymb";
+import { Entypo } from '@expo/vector-icons';
+import AppButton from "./UI/AppButton";
+
 
 
 const AddTodos = ({onSubmit}) => {
     const [todoValue, setTodoValue] = useState('')
 
     const pressHandler = () => {
-        if (todoValue.trim().length <= 2) {
-            Alert.alert(
-                '',
-                'The minimum title length is 3 characters.',
-                [{
-                    text: "Ok",
-                    style: "positive",
-                },],
-                {
-                    cancelable: true,
-                }
-            )
+        if (todoValue.trim().length < 2) {
+            MinSymb()
         } else if (todoValue.trim()) {
             onSubmit(todoValue)
             setTodoValue("")
+            Keyboard.dismiss()
         }
     }
     return (
@@ -33,7 +28,9 @@ const AddTodos = ({onSubmit}) => {
                        autoCapitalize={'none'}
                        maxLength={300}
             />
-            <Button title={'Add'} onPress={pressHandler} disabled={!todoValue.trim()}/>
+            <AppButton onPress={pressHandler}>
+                <Entypo name="add-to-list" size={24}/>
+            </AppButton>
         </View>
     )
 }

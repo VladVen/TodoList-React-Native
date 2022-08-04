@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Button, TextInput, View, StyleSheet, Modal, Alert} from "react-native";
 import Theme from "../Theme";
+import MinSymb from "./UI/MinSymb";
+import AppButton from "./UI/AppButton";
+import { FontAwesome, MaterialIcons} from "@expo/vector-icons";
 
 
 const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
@@ -13,18 +16,8 @@ const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
     const saveTitle = () => {
         if(editValue.trim().length < 1) {
             removeTodo(id)
-        } else if (editValue.trim().length <= 2) {
-            Alert.alert(
-                '',
-                'The minimum title length is 3 characters.',
-                [{
-                    text: "Ok",
-                    style: "positive",
-                },],
-                {
-                    cancelable: true,
-                }
-            )
+        } else if (editValue.trim().length < 2) {
+           MinSymb()
         } else {
             onSave(id, editValue)
             onClose(false)
@@ -45,8 +38,12 @@ const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
 
                 />
                 <View style={style.buttons}>
-                    <Button title={'Cancel'} onPress={() => onClose(false)} color={Theme.deleteColor}/>
-                    <Button title={'Save'} onPress={saveTitle}/>
+                    <AppButton  onPress={() => onClose(false)} color={Theme.deleteColor}>
+                        <MaterialIcons name="cancel" size={24} />
+                    </AppButton>
+                    <AppButton onPress={saveTitle} color={Theme.submitColor}>
+                        <FontAwesome name="save" size={24}  />
+                    </AppButton>
                 </View>
             </View>
         </Modal>
