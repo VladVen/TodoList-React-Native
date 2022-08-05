@@ -9,6 +9,7 @@ import { FontAwesome, MaterialIcons} from "@expo/vector-icons";
 const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
 
     const [editValue, setEditValue] = useState(value)
+
     useEffect(() => {
         setEditValue(value)
     }, [value])
@@ -24,7 +25,10 @@ const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
         }
     }
 
-
+    const onCancel = () => {
+        setEditValue(value)
+        onClose(false)
+    }
     return (
         <Modal visible={visible} animationType={'slide'} transparent={false}>
             <View style={style.modal}>
@@ -38,7 +42,7 @@ const EditModal = ({visible, onClose, value, removeTodo, onSave, id}) => {
 
                 />
                 <View style={style.buttons}>
-                    <AppButton  onPress={() => onClose(false)} color={Theme.deleteColor}>
+                    <AppButton  onPress={onCancel} color={Theme.deleteColor}>
                         <MaterialIcons name="cancel" size={24} />
                     </AppButton>
                     <AppButton onPress={saveTitle} color={Theme.submitColor}>

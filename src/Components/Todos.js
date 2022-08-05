@@ -3,9 +3,9 @@ import {View, StyleSheet, TouchableOpacity} from "react-native";
 import Theme from "../Theme";
 import AppTextBold from "./UI/AppTextBold";
 
-const Todos = ({todos, removeTodo, setTodoId}) => {
+const Todos = ({todos, removeTodo, changeScreen}) => {
     return (
-        <TouchableOpacity onPress={() => setTodoId(todos.id)}
+        <TouchableOpacity onPress={() => changeScreen(todos.id)}
                           onLongPress={() => removeTodo(todos.id)}>
             <View style={style.todo}>
                 <AppTextBold >{todos.title}</AppTextBold>
